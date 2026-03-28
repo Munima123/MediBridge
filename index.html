@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediBridge | Your Online Doctor</title>
+  <style>
+    :root {
+      --bg: #f4fbf8;
+      --surface: rgba(255, 255, 255, 0.9);
+      --surface-strong: #ffffff;
+      --text: #17342e;
+      --muted: #5a756f;
+      --primary: #0d8f78;
+      --primary-dark: #0a6f5d;
+      --accent: #ff8f6b;
+      --line: rgba(23, 52, 46, 0.09);
+      --shadow: 0 24px 60px rgba(13, 78, 67, 0.16);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(13, 143, 120, 0.15), transparent 34%),
+        radial-gradient(circle at top right, rgba(255, 143, 107, 0.14), transparent 26%),
+        linear-gradient(180deg, #f8fffd 0%, #eef8f4 100%);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page-shell {
+      overflow: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .page-shell::before,
+    .page-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      z-index: -1;
+      filter: blur(4px);
+    }
+
+    .page-shell::before {
+      width: 420px;
+      height: 420px;
+      top: -140px;
+      right: -120px;
+      background: rgba(13, 143, 120, 0.12);
+    }
+
+    .page-shell::after {
+      width: 360px;
+      height: 360px;
+      bottom: 8%;
+      left: -140px;
+      background: rgba(255, 143, 107, 0.12);
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 1.1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(244, 251, 248, 0.72);
+      border-bottom: 1px solid rgba(23, 52, 46, 0.05);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), #37b89f);
+      color: #fff;
+      box-shadow: 0 18px 32px rgba(13, 143, 120, 0.25);
+      font-size: 1.1rem;
+    }
+
+    .brand-name {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+      font-size: 1.1rem;
+    }
+
+    .brand-name span:last-child {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-dark);
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      border-radius: 999px;
+      padding: 0.95rem 1.35rem;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #23a78f);
+      color: #fff;
+      box-shadow: 0 16px 28px rgba(13, 143, 120, 0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text);
+      border: 1px solid rgba(23, 52, 46, 0.09);
+    }
+
+    .hero {
+      padding: 4.5rem 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(13, 143, 120, 0.1);
+      color: var(--primary-dark);
+      font-size: 0.84rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 1rem 0 1rem;
+      font-size: clamp(2.8rem, 7vw, 5.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      max-width: 11ch;
+    }
+
+    .hero-copy p,
+    .section-heading p,
+    .feature-card p,
+    .metric p,
+    .assistant-copy p,
+    .testimonial p,
+    .footer-copy,
+    .timeline-card p {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .hero-copy p {
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin: 2rem 0;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .metric {
+      padding: 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .metric p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .doctor-panel {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 250, 246, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .doctor-panel::before {
+      content: "";
+      position: absolute;
+      inset: auto -50px -60px auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(255, 143, 107, 0.26), transparent 65%);
+      z-index: -1;
+    }
+
+    .doctor-card {
+      background: #0e2b26;
+      color: #fff;
+      border-radius: 26px;
+      padding: 1.4rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .doctor-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .doctor-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #44c4ac, #127666);
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+    }
+
+    .doctor-badge small,
+    .chip,
+    .tiny,
+    .assistant-output,
+    input,
+    textarea,
+    select {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .doctor-badge small,
+    .tiny {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .status-pill {
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      color: #d8f7ef;
+    }
+
+    .symptom-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .symptom-hub {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1.2rem;
+      margin-top: 1.4rem;
+    }
+
+    .symptom-catalog,
+    .symptom-alerts {
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 1.35rem;
+      box-shadow: 0 16px 40px rgba(16, 62, 52, 0.07);
+    }
+
+    .symptom-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .symptom-item {
+      border-radius: 18px;
+      padding: 0.95rem;
+      background: linear-gradient(180deg, rgba(13, 143, 120, 0.08), rgba(255, 255, 255, 0.9));
+      border: 1px solid rgba(13, 143, 120, 0.1);
+    }
+
+    .symptom-item strong,
+    .alert-list li,
+    .symptom-item p,
+    .symptom-alerts p {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .symptom-item strong {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--primary-dark);
+    }
+
+    .symptom-item p,
+    .symptom-alerts p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.94rem;
+    }
+
+    .alert-list {
+      margin: 1rem 0 0;
+      padding-left: 1rem;
+      color: var(--text);
+    }
+
+    .chip {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+
+    .consult-box {
+      margin-top: 1rem;
+      background: var(--surface-strong);
+      border-radius: 24px;
+      padding: 1.2rem;
+      border: 1px solid var(--line);
+    }
+
+    .consult-box h3,
+    .assistant-copy h2,
+    .section-heading h2,
+    .feature-card h3,
+    .timeline-card h3,
+    .testimonial h3 {
+      margin-top: 0;
+    }
+
+    .assistant-output {
+      min-height: 132px;
+      border-radius: 18px;
+      background: #eef8f5;
+      padding: 1rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .plan-card {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .plan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 1rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(23, 52, 46, 0.1);
+    }
+
+    .plan-header h4,
+    .plan-section h5,
+    .summary-strip strong,
+    .range-value {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .plan-header p,
+    .plan-section li,
+    .summary-strip span {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .urgency-badge {
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      background: rgba(13, 143, 120, 0.12);
+      color: var(--primary-dark);
+    }
+
+    .urgency-badge[data-level="high"] {
+      background: rgba(255, 143, 107, 0.18);
+      color: #a04424;
+    }
+
+    .urgency-badge[data-level="medium"] {
+      background: rgba(255, 191, 94, 0.24);
+      color: #8c5d00;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .summary-strip div {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(23, 52, 46, 0.08);
+      border-radius: 14px;
+      padding: 0.85rem;
+    }
+
+    .summary-strip span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 0.25rem;
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .plan-section {
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(23, 52, 46, 0.08);
+      border-radius: 16px;
+      padding: 0.95rem;
+    }
+
+    .plan-section h5 {
+      margin-bottom: 0.7rem;
+      color: var(--primary-dark);
+      font-size: 0.98rem;
+    }
+
+    .plan-section ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--text);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+
+    .field-full {
+      grid-column: 1 / -1;
+    }
+
+    .range-wrap {
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .range-value {
+      color: var(--primary-dark);
+      font-size: 0.92rem;
+    }
+
+    .assistant-form {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    label {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid rgba(23, 52, 46, 0.12);
+      border-radius: 16px;
+      padding: 0.95rem 1rem;
+      font-size: 0.98rem;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: rgba(13, 143, 120, 0.5);
+      box-shadow: 0 0 0 4px rgba(13, 143, 120, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 112px;
+    }
+
+    section {
+      padding: 3rem 0;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+      align-items: end;
+      margin-bottom: 1.7rem;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.7rem;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      max-width: 58ch;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .feature-grid,
+    .timeline-grid,
+    .testimonial-grid {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .feature-card,
+    .timeline-card,
+    .testimonial {
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 1.35rem;
+      box-shadow: 0 16px 40px rgba(16, 62, 52, 0.07);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(13, 143, 120, 0.15), rgba(13, 143, 120, 0.03));
+      color: var(--primary-dark);
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p,
+    .timeline-card p,
+    .testimonial p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .assistant-section {
+      padding-top: 4rem;
+    }
+
+    .assistant-shell {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 1.3rem;
+      align-items: stretch;
+    }
+
+    .assistant-copy {
+      background: linear-gradient(160deg, #123731, #1a4f46);
+      color: #fff;
+      border-radius: 32px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .assistant-copy p {
+      color: rgba(255, 255, 255, 0.74);
+      line-height: 1.7;
+    }
+
+    .timeline-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 1rem;
+    }
+
+    .timeline-card strong {
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .testimonial-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .testimonial strong {
+      display: block;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 2.5rem 0 3rem;
+    }
+
+    .footer-card {
+      border-radius: 28px;
+      background: #0f2924;
+      color: #ecfffa;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .footer-copy {
+      color: rgba(236, 255, 250, 0.72);
+      line-height: 1.7;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: flex-end;
+    }
+
+    .footer .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.12s; }
+    .delay-2 { animation-delay: 0.24s; }
+    .delay-3 { animation-delay: 0.36s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        order: 3;
+      }
+
+      .hero-grid,
+      .assistant-shell,
+      .footer-card,
+      .symptom-hub {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid,
+      .timeline-grid,
+      .testimonial-grid,
+      .hero-metrics,
+      .summary-strip,
+      .plan-grid,
+      .symptom-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 680px) {
+      header {
+        position: static;
+      }
+
+      .hero {
+        padding-top: 2.4rem;
+      }
+
+      h1 {
+        max-width: none;
+      }
+
+      .section-heading {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .feature-grid,
+      .timeline-grid,
+      .testimonial-grid,
+      .hero-metrics,
+      .summary-strip,
+      .plan-grid,
+      .form-grid,
+      .symptom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        gap: 0.8rem;
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      .doctor-panel,
+      .assistant-copy,
+      .footer-card,
+      .symptom-catalog,
+      .symptom-alerts {
+        padding: 1.2rem;
+      }
+
+      .doctor-top,
+      .plan-header {
+        flex-direction: column;
+      }
+
+      .status-pill,
+      .urgency-badge {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: min(var(--max-width), calc(100% - 1rem));
+      }
+
+      .hero {
+        padding: 1.8rem 0 2.2rem;
+      }
+
+      .nav {
+        gap: 0.75rem;
+      }
+
+      .brand {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .hero-actions .btn,
+      .footer-actions .btn,
+      .assistant-form .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .metric,
+      .plan-section,
+      .timeline-card,
+      .feature-card,
+      .testimonial,
+      .symptom-item {
+        padding: 1rem;
+      }
+
+      .consult-box,
+      .doctor-card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header>
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="MediBridge home">
+          <div class="brand-mark">+</div>
+          <div class="brand-name">
+            <span>MediBridge</span>
+            <span>24/7 virtual care</span>
+          </div>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#services">Services</a>
+          <a href="#consult">Consult</a>
+          <a href="#journey">How it works</a>
+          <a href="#reviews">Reviews</a>
+        </nav>
+        <a class="btn btn-primary" href="#consult">Start Consultation</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow fade-up">Board-certified care at home</div>
+            <h1 class="fade-up delay-1">A digital doctor that listens before it prescribes.</h1>
+            <p class="fade-up delay-2">
+              Speak with a virtual care assistant, describe symptoms, book same-day appointments,
+              and get a calmer path to treatment. MediBridge blends urgent guidance, follow-up care,
+              and human doctor handoff in one responsive experience.
+            </p>
+            <div class="hero-actions fade-up delay-3">
+              <a class="btn btn-primary" href="#consult">Check Symptoms</a>
+              <a class="btn btn-secondary" href="#services">Explore Services</a>
+            </div>
+            <div class="hero-metrics">
+              <div class="metric">
+                <strong>8 min</strong>
+                <p>Average wait time for triage</p>
+              </div>
+              <div class="metric">
+                <strong>96%</strong>
+                <p>Patient satisfaction score</p>
+              </div>
+              <div class="metric">
+                <strong>24/7</strong>
+                <p>Access to online support</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="doctor-panel fade-up delay-2">
+            <div class="doctor-card">
+              <div class="doctor-top">
+                <div class="doctor-badge">
+                  <div class="avatar">Dr</div>
+                  <div>
+                    <strong>Dr. Amara Lee</strong><br>
+                    <small>Family Medicine and Telehealth</small>
+                  </div>
+                </div>
+                <div class="status-pill">Online now</div>
+              </div>
+              <div>
+                <div class="tiny">Common consultation topics</div>
+                <div class="symptom-list">
+                  <span class="chip">Fever</span>
+                  <span class="chip">Cold & flu</span>
+                  <span class="chip">Headache</span>
+                  <span class="chip">Allergies</span>
+                  <span class="chip">Skin concerns</span>
+                  <span class="chip">Fatigue</span>
+                  <span class="chip">Stomach pain</span>
+                  <span class="chip">Medication refill</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="consult-box">
+              <h3>Instant care snapshot</h3>
+              <div class="assistant-output" id="quickSummary">
+                Tell us how you're feeling and the online doctor will suggest the right next step,
+                from home care guidance to priority video consultation.
+              </div>
+              <div class="tiny">Safe note: this demo provides general guidance and does not replace emergency care.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">Care options</div>
+              <h2>Medical help designed for real-life urgency.</h2>
+            </div>
+            <p>
+              The platform is built to feel reassuring on mobile and desktop, with fast decisions,
+              plain-language guidance, and a clear path from symptoms to support.
+            </p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon">+</div>
+              <h3>Symptom triage</h3>
+              <p>Describe what is happening and receive a quick recommendation for self-care, a virtual visit, or urgent escalation.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">Rx</div>
+              <h3>Prescriptions and follow-up</h3>
+              <p>Doctors can review treatment plans, send renewal requests, and keep patients updated with next steps after each visit.</p>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">24</div>
+              <h3>Always-on support</h3>
+              <p>Patients can check guidance at any time, making the website feel like a dependable online doctor instead of a static brochure.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="symptoms">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">Symptom coverage</div>
+              <h2>More reasons patients open an online doctor visit.</h2>
+            </div>
+            <p>
+              The website now highlights a wider range of common complaints so visitors can quickly see
+              that the service supports everyday issues, follow-up concerns, and signs worth reviewing.
+            </p>
+          </div>
+          <div class="symptom-hub">
+            <article class="symptom-catalog">
+              <h3>Common symptoms we help assess</h3>
+              <div class="symptom-grid">
+                <div class="symptom-item">
+                  <strong>Headache or migraine</strong>
+                  <p>Guidance for pain severity, hydration, and when a same-day doctor review makes sense.</p>
+                </div>
+                <div class="symptom-item">
+                  <strong>Allergy flare-ups</strong>
+                  <p>Support for sneezing, itching, sinus pressure, and seasonal breathing discomfort.</p>
+                </div>
+                <div class="symptom-item">
+                  <strong>Fatigue</strong>
+                  <p>Useful for low energy, weakness, recovery follow-up, or persistent tiredness.</p>
+                </div>
+                <div class="symptom-item">
+                  <strong>Cold and cough</strong>
+                  <p>Virtual review for sore throat, congestion, lingering cough, or worsening chest symptoms.</p>
+                </div>
+                <div class="symptom-item">
+                  <strong>Skin irritation</strong>
+                  <p>Quick help for rash, redness, itching, and visible changes that need monitoring.</p>
+                </div>
+                <div class="symptom-item">
+                  <strong>Digestive concerns</strong>
+                  <p>Support for nausea, stomach cramps, appetite change, and recovery planning.</p>
+                </div>
+              </div>
+            </article>
+            <article class="symptom-alerts">
+              <h3>Signs that deserve faster attention</h3>
+              <p>
+                A strong online doctor experience should also explain when symptoms may need urgent review
+                instead of routine home care.
+              </p>
+              <ul class="alert-list">
+                <li>Shortness of breath or chest pain</li>
+                <li>High fever that keeps rising</li>
+                <li>Confusion, fainting, or severe weakness</li>
+                <li>Rash with swelling or signs of infection</li>
+                <li>Persistent vomiting or dehydration concerns</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="consult" class="assistant-section">
+        <div class="container assistant-shell">
+          <div class="assistant-copy">
+            <div class="eyebrow">Virtual assessment</div>
+            <h2>Describe your symptoms and get a guided response.</h2>
+            <p>
+              This interactive panel simulates how an online doctor site can welcome a patient,
+              understand basic symptoms, and steer them toward the right care path.
+            </p>
+            <div class="timeline-grid">
+              <article class="timeline-card">
+                <strong>Step 1</strong>
+                <h3>Share symptoms</h3>
+                <p>Enter your concern, pain level, and how long it has been happening.</p>
+              </article>
+              <article class="timeline-card">
+                <strong>Step 2</strong>
+                <h3>Review guidance</h3>
+                <p>The assistant highlights likely next actions in simple, reassuring language.</p>
+              </article>
+              <article class="timeline-card">
+                <strong>Step 3</strong>
+                <h3>Book a doctor</h3>
+                <p>Move directly to a same-day visit or keep monitoring with home care advice.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="consult-box">
+            <h3>Online doctor assistant</h3>
+            <div class="assistant-output" id="assistantOutput">
+              Start with a few details below. The assistant will generate a care plan with urgency, next steps, and home support guidance.
+            </div>
+            <form class="assistant-form" id="assistantForm">
+              <div class="form-grid">
+                <div>
+                  <label for="patientName">Your name</label>
+                  <input id="patientName" name="patientName" type="text" placeholder="Enter your name">
+                </div>
+                <div>
+                  <label for="patientAge">Age group</label>
+                  <select id="patientAge" name="patientAge">
+                    <option value="child">Child</option>
+                    <option value="adult" selected>Adult</option>
+                    <option value="senior">Senior</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="symptomType">Primary concern</label>
+                  <select id="symptomType" name="symptomType">
+                    <option value="fever">Fever or flu-like symptoms</option>
+                    <option value="cough">Persistent cough or sore throat</option>
+                    <option value="skin">Skin irritation or rash</option>
+                    <option value="stomach">Stomach pain or nausea</option>
+                    <option value="headache">Headache or migraine</option>
+                    <option value="allergy">Allergy or sinus flare-up</option>
+                    <option value="fatigue">Fatigue or low energy</option>
+                    <option value="anxiety">Stress, anxiety, or poor sleep</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="duration">How long has this been happening?</label>
+                  <select id="duration" name="duration">
+                    <option value="today">Started today</option>
+                    <option value="days" selected>A few days</option>
+                    <option value="week">About a week</option>
+                    <option value="longer">More than a week</option>
+                  </select>
+                </div>
+                <div class="field-full range-wrap">
+                  <label for="severity">Pain or discomfort level</label>
+                  <input id="severity" name="severity" type="range" min="1" max="10" value="4">
+                  <div class="range-value">Current level: <span id="severityValue">4</span>/10</div>
+                </div>
+                <div class="field-full">
+                  <label for="symptomNotes">Tell the doctor more</label>
+                  <textarea id="symptomNotes" name="symptomNotes" placeholder="Example: I have had a sore throat for two days with a mild fever and fatigue."></textarea>
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit">Generate Care Plan</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">Patient trust</div>
+              <h2>People come here for clarity when health feels uncertain.</h2>
+            </div>
+            <p>
+              Testimonials help the website feel human and credible, especially for first-time patients
+              deciding whether to trust online consultation.
+            </p>
+          </div>
+          <div class="testimonial-grid">
+            <article class="testimonial">
+              <p>
+                "The symptom checker helped me decide I didn't need the ER, but I still booked a video visit within minutes and got medication guidance the same morning."
+              </p>
+              <strong>Nadia R., working parent</strong>
+            </article>
+            <article class="testimonial">
+              <p>
+                "It feels much more thoughtful than a standard clinic website. The layout is calm, the steps are clear, and it actually guides you like a digital doctor."
+              </p>
+              <strong>Marcus T., remote patient</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="journey">
+      <div class="container">
+        <div class="footer-card">
+          <div>
+            <div class="eyebrow">Start now</div>
+            <h2>Medical care should feel immediate, warm, and easy to trust.</h2>
+            <p class="footer-copy">
+              Use this landing page as a polished base for a telemedicine brand, online doctor startup,
+              or patient-first clinic that wants a stronger digital experience.
+            </p>
+          </div>
+          <div class="footer-actions">
+            <a class="btn btn-primary" href="#consult">Launch Consultation</a>
+            <a class="btn btn-secondary" href="#top">Back to Top</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const assistantForm = document.getElementById("assistantForm");
+    const assistantOutput = document.getElementById("assistantOutput");
+    const quickSummary = document.getElementById("quickSummary");
+    const severityInput = document.getElementById("severity");
+    const severityValue = document.getElementById("severityValue");
+
+    const adviceMap = {
+      fever: {
+        title: "Fever support",
+        care: "Hydration, rest, and temperature monitoring are good first steps if symptoms are mild.",
+        escalation: "If fever is very high, lasting several days, or paired with breathing trouble, arrange urgent review.",
+        homeSteps: ["Drink fluids regularly", "Rest and monitor temperature", "Track chills, cough, or dehydration signs"],
+        appointment: ["Book urgent review if symptoms feel intense", "Request same-day video care for worsening fever", "Prepare temperature history for the doctor"]
+      },
+      cough: {
+        title: "Respiratory check-in",
+        care: "Warm fluids, throat care, and symptom monitoring can help while you watch for changes.",
+        escalation: "If you notice chest pain, shortness of breath, or worsening symptoms, book a same-day doctor visit.",
+        homeSteps: ["Use warm fluids and throat soothing care", "Avoid smoke or strong irritants", "Watch for breathing changes or chest discomfort"],
+        appointment: ["Schedule a doctor if the cough keeps building", "Ask about testing if infection is suspected", "Share whether symptoms are worse at night"]
+      },
+      skin: {
+        title: "Skin concern review",
+        care: "Avoid new irritants, keep the area clean, and track whether redness or itching spreads.",
+        escalation: "Rapid swelling, facial involvement, or signs of infection deserve quick medical attention.",
+        homeSteps: ["Pause new soaps or skin products", "Keep the area clean and dry", "Take note of spreading redness or swelling"],
+        appointment: ["Arrange review if the rash expands quickly", "Upload photos if the final product later supports it", "Mention itch, pain, drainage, or fever"]
+      },
+      stomach: {
+        title: "Digestive care guidance",
+        care: "Small sips of water, bland food, and rest are often recommended for mild stomach discomfort.",
+        escalation: "Severe pain, dehydration, or repeated vomiting should be reviewed promptly by a clinician.",
+        homeSteps: ["Take small sips of water", "Try bland foods if tolerated", "Monitor vomiting, cramping, or hydration"],
+        appointment: ["Book care quickly for persistent pain", "Tell the doctor what you have eaten recently", "Mention fever, diarrhea, or weakness"]
+      },
+      headache: {
+        title: "Headache support plan",
+        care: "Hydration, rest, and limiting screen strain may help when headache symptoms are mild to moderate.",
+        escalation: "Sudden severe pain, confusion, weakness, or vision changes should be reviewed urgently.",
+        homeSteps: ["Rest in a calm and quiet room", "Drink water and reduce screen glare", "Track whether pain is building or easing"],
+        appointment: ["Book review if headaches keep returning", "Tell the doctor where the pain is located", "Mention nausea, light sensitivity, or dizziness"]
+      },
+      allergy: {
+        title: "Allergy and sinus care",
+        care: "Reducing exposure, rest, and monitoring breathing can help while symptoms stay manageable.",
+        escalation: "Breathing trouble, facial swelling, or fast-worsening symptoms need prompt medical attention.",
+        homeSteps: ["Avoid likely triggers when possible", "Keep hydrated and rest", "Watch for wheezing, swelling, or worsening sinus pressure"],
+        appointment: ["Schedule a visit if symptoms linger", "Share any known triggers or medication use", "Mention breathing changes or eye irritation"]
+      },
+      fatigue: {
+        title: "Fatigue review",
+        care: "Rest, hydration, and checking for other symptoms can help uncover whether fatigue is temporary or building.",
+        escalation: "Severe weakness, fainting, chest symptoms, or major daily-function decline should be reviewed quickly.",
+        homeSteps: ["Increase fluids and rest", "Note sleep quality and appetite", "Track whether fatigue affects walking, work, or focus"],
+        appointment: ["Book review for persistent low energy", "Mention recent illness or stress", "Tell the doctor if dizziness or shortness of breath is present"]
+      },
+      anxiety: {
+        title: "Mental wellness support",
+        care: "Gentle breathing, rest, and speaking with a clinician can help when stress begins affecting sleep or focus.",
+        escalation: "If distress feels overwhelming or includes thoughts of self-harm, contact emergency or crisis support immediately.",
+        homeSteps: ["Pause and slow your breathing", "Reduce noise and overstimulation", "Write down what is making symptoms worse"],
+        appointment: ["Book a supportive mental health visit", "Ask about sleep, stress, and follow-up resources", "Share whether symptoms are affecting work or home life"]
+      }
+    };
+
+    function renderList(items) {
+      return "<ul>" + items.map(function (item) {
+        return "<li>" + item + "</li>";
+      }).join("") + "</ul>";
+    }
+
+    function getUrgency(severity, duration, patientAge) {
+      let score = severity;
+
+      if (duration === "week") {
+        score += 1;
+      } else if (duration === "longer") {
+        score += 2;
+      }
+
+      if (patientAge === "child" || patientAge === "senior") {
+        score += 1;
+      }
+
+      if (score >= 9) {
+        return {
+          label: "Priority review recommended",
+          level: "high",
+          summary: "A same-day doctor consultation is the safest next step."
+        };
+      }
+
+      if (score >= 6) {
+        return {
+          label: "Doctor visit today is advised",
+          level: "medium",
+          summary: "A virtual consultation today would help confirm treatment and next steps."
+        };
+      }
+
+      return {
+        label: "Home care with monitoring",
+        level: "low",
+        summary: "Home support is reasonable now if symptoms stay mild and stable."
+      };
+    }
+
+    severityInput.addEventListener("input", function () {
+      severityValue.textContent = severityInput.value;
+    });
+
+    assistantForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("patientName").value.trim() || "there";
+      const patientAge = document.getElementById("patientAge").value;
+      const symptomType = document.getElementById("symptomType").value;
+      const duration = document.getElementById("duration").value;
+      const severity = Number(document.getElementById("severity").value);
+      const notes = document.getElementById("symptomNotes").value.trim();
+      const advice = adviceMap[symptomType];
+      const urgency = getUrgency(severity, duration, patientAge);
+
+      const ageLabelMap = {
+        child: "Child",
+        adult: "Adult",
+        senior: "Senior"
+      };
+
+      const durationLabelMap = {
+        today: "Started today",
+        days: "A few days",
+        week: "About a week",
+        longer: "More than a week"
+      };
+
+      const observationList = [
+        advice.care,
+        urgency.summary,
+        advice.escalation
+      ];
+
+      if (notes) {
+        observationList.push("Patient notes: " + notes);
+      } else {
+        observationList.push("Patient notes: no additional details were entered.");
+      }
+
+      const markup =
+        '<div class="plan-card">' +
+          '<div class="plan-header">' +
+            '<div>' +
+              '<h4>' + name + "'s care plan</h4>" +
+              '<p>' + advice.title + '</p>' +
+            '</div>' +
+            '<div class="urgency-badge" data-level="' + urgency.level + '">' + urgency.label + '</div>' +
+          '</div>' +
+          '<div class="summary-strip">' +
+            '<div><strong>Age group</strong><span>' + ageLabelMap[patientAge] + '</span></div>' +
+            '<div><strong>Duration</strong><span>' + durationLabelMap[duration] + '</span></div>' +
+            '<div><strong>Symptom level</strong><span>' + severity + '/10 discomfort</span></div>' +
+          '</div>' +
+          '<div class="plan-grid">' +
+            '<div class="plan-section"><h5>What to do now</h5>' + renderList(advice.homeSteps) + '</div>' +
+            '<div class="plan-section"><h5>Doctor follow-up</h5>' + renderList(advice.appointment) + '</div>' +
+            '<div class="plan-section"><h5>Clinical summary</h5>' + renderList(observationList) + '</div>' +
+            '<div class="plan-section"><h5>Recommended next step</h5>' + renderList([
+              urgency.summary,
+              "Use the booking button if symptoms are worsening or hard to manage at home.",
+              "Seek emergency care immediately for severe breathing problems, collapse, or dangerous distress."
+            ]) + '</div>' +
+          '</div>' +
+        '</div>';
+
+      assistantOutput.innerHTML = markup;
+      quickSummary.textContent = "Live triage insight: " + advice.title + ". " + urgency.summary;
+    });
+  </script>
+</body>
+</html>
